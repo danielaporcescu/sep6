@@ -5,4 +5,20 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Resources\airlines.csv" />
+    <None Remove="Resources\airports.csv" />
+    <None Remove="Resources\flights.csv" />
+    <None Remove="Resources\planes.csv" />
+    <None Remove="Resources\weather.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\airlines.csv" />
+    <EmbeddedResource Include="Resources\airports.csv" />
+    <EmbeddedResource Include="Resources\flights.csv" />
+    <EmbeddedResource Include="Resources\planes.csv" />
+    <EmbeddedResource Include="Resources\weather.csv" />
+  </ItemGroup>
+
 </Project>
