@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FlightsWebApplication.Models
 {
-    public class Airlines
+    public class Airline
     {
     }
 }
