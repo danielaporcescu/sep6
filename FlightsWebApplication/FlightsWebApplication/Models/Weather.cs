@@ -7,8 +7,6 @@ namespace FlightsWebApplication.Models
 {
     public class Weather
     {
-        //origin,year,month,day,hour,temp,dewp,humid,wind_dir,wind_speed,wind_gust,precip,pressure,visib,time_hour
-
         public string Origin { get; set; }
         public DateTime Date { get; set; }
         public int Hour { get; set; }
