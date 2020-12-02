@@ -7,5 +7,7 @@ namespace FlightsWebApplication.Models
 {
     public class Airline
     {
+        public string Carrier { get; set; }
+        public string Name { get; set; }
     }
 }
