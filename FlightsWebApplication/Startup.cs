@@ -29,6 +29,8 @@ namespace FlightsWebApplication
                options.UseSqlServer(Configuration.GetConnectionString("AzureDbConnection")));
             services.AddMvc();
             services.AddTransient<IAirlineRepository, AirlineRepository>();
+            services.AddTransient<IFlightsRepository, FlightsRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

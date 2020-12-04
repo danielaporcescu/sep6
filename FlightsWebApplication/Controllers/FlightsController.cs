@@ -1,29 +1,27 @@
 ﻿using DataContext.Repositories;
-using FlightsWebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace FlightsWebApplication.Controllers
 {
     [ApiController]
-    public class AirlineController 
+    public class FlightsController
         : Controller
     {
-        private readonly IAirlineRepository airlineRepository;
+        private readonly IFlightsRepository flightsRepository;
 
-        public AirlineController(IAirlineRepository airlineRepository)
+        public FlightsController(IFlightsRepository flightsRepository)
         {
-            this.airlineRepository = airlineRepository;
+            this.flightsRepository = flightsRepository;
         }
 
         [HttpGet]
-        [Route("/api/airlines")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Airline>))]
+        [Route("/api/flights-per-month")]
+        [ProducesResponseType(200, Type = typeof(Dictionary<int, int>))]
         [ProducesResponseType(400)]
         public IActionResult GetAirlines()
-        
         {
-            var airlines = airlineRepository.GetAirlines();
+            var airlines = flightsRepository.GetNumberOfFlightsPerMonth();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
