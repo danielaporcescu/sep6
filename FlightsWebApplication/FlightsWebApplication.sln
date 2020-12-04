@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightsWebApplication", "FlightsWebApplication\FlightsWebApplication.csproj", "{CC62F2B7-AF77-45FB-BDED-42E060087E3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigrationConsole", "MigrationConsole\MigrationConsole.csproj", "{57864C02-AF7D-4DA1-86E2-EA9EA7367C10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataContext", "DataContext\DataContext.csproj", "{EE9A08CD-0F8D-46A8-B438-47DA3C23302D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{CC62F2B7-AF77-45FB-BDED-42E060087E3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC62F2B7-AF77-45FB-BDED-42E060087E3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC62F2B7-AF77-45FB-BDED-42E060087E3B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{57864C02-AF7D-4DA1-86E2-EA9EA7367C10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{57864C02-AF7D-4DA1-86E2-EA9EA7367C10}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{57864C02-AF7D-4DA1-86E2-EA9EA7367C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{57864C02-AF7D-4DA1-86E2-EA9EA7367C10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE9A08CD-0F8D-46A8-B438-47DA3C23302D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE9A08CD-0F8D-46A8-B438-47DA3C23302D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE9A08CD-0F8D-46A8-B438-47DA3C23302D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE9A08CD-0F8D-46A8-B438-47DA3C23302D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
