@@ -1,4 +1,5 @@
 ﻿using DataContext.Repositories;
+using FlightsWebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -19,13 +20,39 @@ namespace FlightsWebApplication.Controllers
         [Route("/api/flights-per-month")]
         [ProducesResponseType(200, Type = typeof(Dictionary<int, int>))]
         [ProducesResponseType(400)]
-        public IActionResult GetAirlines()
+        public IActionResult GetFlightsPerMonth()
         {
-            var airlines = flightsRepository.GetNumberOfFlightsPerMonth();
+            var flights = flightsRepository.GetNumberOfFlightsPerMonth();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(airlines);
+            return Ok(flights);
+        }
+
+        [HttpGet]
+        [Route("/api/flights-per-month-from-dest")]
+        [ProducesResponseType(200, Type = typeof(Dictionary<int, FlightsFromDestinations>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetFlightsPerMonthPerDestination()
+        {
+            var flights = flightsRepository.GetNumberOfFlightsPerMonthFromDestinations();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(flights);
+        }
+
+        [HttpGet]
+        [Route("/api/flights-per-month-from-dest-percentage")]
+        [ProducesResponseType(200, Type = typeof(Dictionary<int, FlightsFromDestinations>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetFlightsPerMonthPerDestinationPercentage()
+        {
+            var flights = flightsRepository.GetPercentageOfFlightsPerMonthFromDestinations();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(flights);
         }
     }
 }
