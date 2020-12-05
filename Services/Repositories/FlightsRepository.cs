@@ -37,9 +37,9 @@ namespace DataContext.Repositories
                 list.Add(new FlightsFromDestinationsPerMonth()
                 {
                     Month = i,
-                    EWR = context.Flights.Count(x => x.Origin == "EWR"),
-                    JFK = context.Flights.Count(x => x.Origin == "JFK"),
-                    LGA = context.Flights.Count(x => x.Origin == "LGA"),
+                    EWR = context.Flights.Count(x => x.Origin == "EWR" && x.Month == i),
+                    JFK = context.Flights.Count(x => x.Origin == "JFK" && x.Month == i),
+                    LGA = context.Flights.Count(x => x.Origin == "LGA" && x.Month == i),
                 });
             }
 
