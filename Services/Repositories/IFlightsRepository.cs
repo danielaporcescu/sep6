@@ -1,14 +1,17 @@
 ﻿using FlightsWebApplication.Models;
+using Services.Models;
 using System.Collections.Generic;
 
 namespace DataContext.Repositories
 {
     public interface IFlightsRepository
     {
-        public IDictionary<int, int> GetNumberOfFlightsPerMonth();
+        public IEnumerable<MonthFlightNumber> GetNumberOfFlightsPerMonth();
 
-        public IDictionary<int, FlightsFromDestinations> GetNumberOfFlightsPerMonthFromDestinations();
+        public IEnumerable<FlightsFromDestinationsPerMonth> GetNumberOfFlightsPerMonthFromDestinations();
 
-        public IDictionary<int, FlightsFromDestinations> GetPercentageOfFlightsPerMonthFromDestinations();
+        public IEnumerable<FlightsFromDestinationsPerMonth> GetPercentageOfFlightsPerMonthFromDestinations();
+
+        //public IDictionary<string, int> GetTopTenDestinationsAndNumberOfFlights();
     }
 }
