@@ -16,5 +16,7 @@ namespace DataContext.Repositories
         public Task<IEnumerable<DestinationFlightCount>> GetTopTenNumberOfFlights();
 
         public Task<IEnumerable<AirportNameMainAirportsCount>> GetTopTenNumberOfFlightsForMainOrigins();
+
+        public Task<MeanAirTime> GetMeanAirTime();
     }
 }
