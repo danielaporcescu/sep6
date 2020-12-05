@@ -55,5 +55,31 @@ namespace FlightsWebApplication.Controllers
 
             return Ok(flights);
         }
+
+        [HttpGet]
+        [Route("/api/top-10-dest-nr-of-flights")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<DestinationFlightCount>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetTopTenNumberOfFlights()
+        {
+            var flights = flightsRepository.GetTopTenNumberOfFlights();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(flights);
+        }
+
+        [HttpGet]
+        [Route("/api/top-10-dest-nr-of-flights-per-main-origins")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<DestinationFlightCount>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetTopTenNumberOfFlightsForMainOrigins()
+        {
+            var flights = flightsRepository.GetTopTenNumberOfFlightsForMainOrigins();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(flights);
+        }
     }
 }
