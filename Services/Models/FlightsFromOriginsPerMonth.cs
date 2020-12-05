@@ -1,6 +1,6 @@
-﻿namespace FlightsWebApplication.Models
+﻿namespace Services.Models
 {
-    public class FlightsFromDestinationsPerMonth
+    public class FlightsFromOriginsPerMonth
     {
         public int Month { get; set; }
         public double EWR { get; set; } = 0;
