@@ -32,7 +32,7 @@ namespace FlightsWebApplication.Controllers
 
         [HttpGet]
         [Route("/api/flights-per-month-from-dest")]
-        [ProducesResponseType(200, Type = typeof(Dictionary<int, FlightsFromDestinationsPerMonth>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<FlightsFromDestinationsPerMonth>))]
         [ProducesResponseType(400)]
         public IActionResult GetFlightsPerMonthPerDestination()
         {
@@ -45,7 +45,7 @@ namespace FlightsWebApplication.Controllers
 
         [HttpGet]
         [Route("/api/flights-per-month-from-dest-percentage")]
-        [ProducesResponseType(200, Type = typeof(Dictionary<int, FlightsFromDestinationsPerMonth>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<FlightsFromDestinationsPerMonth>))]
         [ProducesResponseType(400)]
         public IActionResult GetFlightsPerMonthPerDestinationPercentage()
         {
