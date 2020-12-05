@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace FlightsWebApplication
 {
@@ -31,6 +32,12 @@ namespace FlightsWebApplication
             services.AddTransient<IAirlineRepository, AirlineRepository>();
             services.AddTransient<IFlightsRepository, FlightsRepository>();
 
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "UAA Api", Version = "v1" });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +48,15 @@ namespace FlightsWebApplication
                 app.UseDeveloperExceptionPage();
             }
             context.Database.Migrate();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "UAA Api V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 
