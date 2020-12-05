@@ -1,6 +1,8 @@
 ﻿using DataContext.Context;
 using FlightsWebApplication.Models;
+using Services.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DataContext.Repositories
 {
@@ -14,66 +16,50 @@ namespace DataContext.Repositories
             this.context = context;
         }
 
-        public IDictionary<int, int> GetNumberOfFlightsPerMonth()
+        public IEnumerable<MonthFlightNumber> GetNumberOfFlightsPerMonth()
         {
-            var dictionary = new Dictionary<int, int>();
+            var list = new List<MonthFlightNumber>();
 
             for (int i = 1; i < 13; i++)
             {
-                dictionary.Add(i, 0);
+                list.Add(new MonthFlightNumber() { Month = i, NumberOfFlights = context.Flights.Count(x => x.Month == i) });
             }
 
-            foreach (var flight in context.Flights)
-            {
-                dictionary[flight.Month]++;
-            }
-            return dictionary;
+            return list;
         }
 
-        public IDictionary<int, FlightsFromDestinations> GetNumberOfFlightsPerMonthFromDestinations()
+        public IEnumerable<FlightsFromDestinationsPerMonth> GetNumberOfFlightsPerMonthFromDestinations()
         {
-            var dictionary = new Dictionary<int, FlightsFromDestinations>();
+            var list = new List<FlightsFromDestinationsPerMonth>();
+
             for (int i = 1; i < 13; i++)
             {
-                dictionary.Add(i, new FlightsFromDestinations());
-            }
-            foreach (var flight in context.Flights)
-            {
-                switch (flight.Origin)
+                list.Add(new FlightsFromDestinationsPerMonth()
                 {
-                    case "EWR":
-                        dictionary[flight.Month].EWR++;
-                        break;
-
-                    case "JFK":
-                        dictionary[flight.Month].JFK++;
-                        break;
-
-                    case "LGA":
-                        dictionary[flight.Month].LGA++;
-                        break;
-
-                    default: break;
-                }
+                    Month = i,
+                    EWR = context.Flights.Count(x => x.Origin == "EWR"),
+                    JFK = context.Flights.Count(x => x.Origin == "JFK"),
+                    LGA = context.Flights.Count(x => x.Origin == "LGA"),
+                });
             }
 
-            return dictionary;
+            return list;
         }
 
-        public IDictionary<int, FlightsFromDestinations> GetPercentageOfFlightsPerMonthFromDestinations()
+        public IEnumerable<FlightsFromDestinationsPerMonth> GetPercentageOfFlightsPerMonthFromDestinations()
         {
-            var flightsPerMonth = GetNumberOfFlightsPerMonthFromDestinations();
+            var list = GetNumberOfFlightsPerMonthFromDestinations();
 
-            foreach (var entry in flightsPerMonth)
+            foreach (var entry in list)
             {
-                var total = entry.Value.EWR + entry.Value.JFK + entry.Value.LGA;
+                var total = entry.EWR + entry.JFK + entry.LGA;
 
-                entry.Value.EWR = entry.Value.EWR * 100 / total;
-                entry.Value.JFK = entry.Value.JFK * 100 / total;
-                entry.Value.LGA = entry.Value.LGA * 100 / total;
+                entry.EWR = entry.EWR * 100 / total;
+                entry.JFK = entry.JFK * 100 / total;
+                entry.LGA = entry.LGA * 100 / total;
             }
 
-            return flightsPerMonth;
+            return list;
         }
     }
 }

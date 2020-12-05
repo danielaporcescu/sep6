@@ -1,6 +1,7 @@
 ﻿using DataContext.Repositories;
 using FlightsWebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
+using Services.Models;
 using System.Collections.Generic;
 
 namespace FlightsWebApplication.Controllers
@@ -18,7 +19,7 @@ namespace FlightsWebApplication.Controllers
 
         [HttpGet]
         [Route("/api/flights-per-month")]
-        [ProducesResponseType(200, Type = typeof(Dictionary<int, int>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<MonthFlightNumber>))]
         [ProducesResponseType(400)]
         public IActionResult GetFlightsPerMonth()
         {
@@ -31,7 +32,7 @@ namespace FlightsWebApplication.Controllers
 
         [HttpGet]
         [Route("/api/flights-per-month-from-dest")]
-        [ProducesResponseType(200, Type = typeof(Dictionary<int, FlightsFromDestinations>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<FlightsFromDestinationsPerMonth>))]
         [ProducesResponseType(400)]
         public IActionResult GetFlightsPerMonthPerDestination()
         {
@@ -44,7 +45,7 @@ namespace FlightsWebApplication.Controllers
 
         [HttpGet]
         [Route("/api/flights-per-month-from-dest-percentage")]
-        [ProducesResponseType(200, Type = typeof(Dictionary<int, FlightsFromDestinations>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<FlightsFromDestinationsPerMonth>))]
         [ProducesResponseType(400)]
         public IActionResult GetFlightsPerMonthPerDestinationPercentage()
         {
