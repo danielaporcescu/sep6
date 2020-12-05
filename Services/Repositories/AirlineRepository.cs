@@ -1,7 +1,9 @@
 ﻿using DataContext.Context;
 using FlightsWebApplication.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataContext.Repositories
 {
@@ -15,9 +17,9 @@ namespace DataContext.Repositories
             this.context = context;
         }
 
-        public IEnumerable<Airline> GetAirlines()
+        public async Task<IEnumerable<Airline>> GetAirlines()
         {
-            return context.Airlines.OrderBy(a => a.Name).ToList();
+            return await context.Airlines.AsQueryable().OrderBy(a => a.Name).ToListAsync();
         }
     }
 }

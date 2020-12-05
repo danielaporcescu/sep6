@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace FlightsWebApplication.Controllers
 {
     [ApiController]
-    public class AirlineController 
+    public class AirlineController
         : Controller
     {
         private readonly IAirlineRepository airlineRepository;
@@ -21,13 +21,13 @@ namespace FlightsWebApplication.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Airline>))]
         [ProducesResponseType(400)]
         public IActionResult GetAirlines()
-        
+
         {
-            var airlines = airlineRepository.GetAirlines();
+            var result = airlineRepository.GetAirlines();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(airlines);
+            return Ok(result.Result);
         }
     }
 }

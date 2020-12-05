@@ -27,7 +27,7 @@ namespace FlightsWebApplication.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(flights);
+            return Ok(flights.Result);
         }
 
         [HttpGet]
@@ -40,7 +40,7 @@ namespace FlightsWebApplication.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(flights);
+            return Ok(flights.Result);
         }
 
         [HttpGet]
@@ -53,7 +53,7 @@ namespace FlightsWebApplication.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(flights);
+            return Ok(flights.Result);
         }
 
         [HttpGet]
@@ -66,7 +66,7 @@ namespace FlightsWebApplication.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(flights);
+            return Ok(flights.Result);
         }
 
         [HttpGet]
@@ -79,7 +79,7 @@ namespace FlightsWebApplication.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(flights);
+            return Ok(flights.Result);
         }
     }
 }

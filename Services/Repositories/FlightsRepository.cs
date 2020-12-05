@@ -1,8 +1,10 @@
 ﻿using DataContext.Context;
 using FlightsWebApplication.Models;
+using Microsoft.EntityFrameworkCore;
 using Services.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataContext.Repositories
 {
@@ -16,19 +18,19 @@ namespace DataContext.Repositories
             this.context = context;
         }
 
-        public IEnumerable<MonthFlightNumber> GetNumberOfFlightsPerMonth()
+        public async Task<IEnumerable<MonthFlightNumber>> GetNumberOfFlightsPerMonth()
         {
             var list = new List<MonthFlightNumber>();
 
             for (int i = 1; i < 13; i++)
             {
-                list.Add(new MonthFlightNumber() { Month = i, NumberOfFlights = context.Flights.Count(x => x.Month == i) });
+                list.Add(new MonthFlightNumber() { Month = i, NumberOfFlights = await context.Flights.CountAsync(x => x.Month == i) });
             }
 
             return list;
         }
 
-        public IEnumerable<FlightsFromDestinationsPerMonth> GetNumberOfFlightsPerMonthFromDestinations()
+        public async Task<IEnumerable<FlightsFromDestinationsPerMonth>> GetNumberOfFlightsPerMonthFromDestinations()
         {
             var list = new List<FlightsFromDestinationsPerMonth>();
 
@@ -37,18 +39,18 @@ namespace DataContext.Repositories
                 list.Add(new FlightsFromDestinationsPerMonth()
                 {
                     Month = i,
-                    EWR = context.Flights.Count(x => x.Origin == "EWR" && x.Month == i),
-                    JFK = context.Flights.Count(x => x.Origin == "JFK" && x.Month == i),
-                    LGA = context.Flights.Count(x => x.Origin == "LGA" && x.Month == i),
+                    EWR = await context.Flights.CountAsync(x => x.Origin == "EWR" && x.Month == i),
+                    JFK = await context.Flights.CountAsync(x => x.Origin == "JFK" && x.Month == i),
+                    LGA = await context.Flights.CountAsync(x => x.Origin == "LGA" && x.Month == i),
                 });
             }
 
             return list;
         }
 
-        public IEnumerable<FlightsFromDestinationsPerMonth> GetPercentageOfFlightsPerMonthFromDestinations()
+        public async Task<IEnumerable<FlightsFromDestinationsPerMonth>> GetPercentageOfFlightsPerMonthFromDestinations()
         {
-            var list = GetNumberOfFlightsPerMonthFromDestinations();
+            var list = await GetNumberOfFlightsPerMonthFromDestinations();
 
             foreach (var entry in list)
             {
@@ -62,48 +64,48 @@ namespace DataContext.Repositories
             return list;
         }
 
-        public IEnumerable<AirportNameMainAirportsCount> GetTopTenNumberOfFlightsForMainOrigins()
+        public async Task<IEnumerable<AirportNameMainAirportsCount>> GetTopTenNumberOfFlightsForMainOrigins()
         {
             var list = new List<AirportNameMainAirportsCount>();
-
-            foreach (var flight in context.Flights)
+            await context.Flights.AsQueryable().ForEachAsync(i =>
             {
-                if (!list.Any(x => x.AirportName == flight.Dest))
+                if (!list.Any(x => x.AirportName == i.Dest))
                 {
-                    list.Add(new AirportNameMainAirportsCount() { AirportName = flight.Dest });
+                    list.Add(new AirportNameMainAirportsCount() { AirportName = i.Dest });
                 }
 
-                switch (flight.Origin)
+                switch (i.Origin)
                 {
                     case "EWR":
-                        list.Find(x => x.AirportName == flight.Dest).EWR++;
+                        list.Find(x => x.AirportName == i.Dest).EWR++;
                         break;
 
                     case "JFK":
-                        list.Find(x => x.AirportName == flight.Dest).JFK++;
+                        list.Find(x => x.AirportName == i.Dest).JFK++;
                         break;
 
                     case "LGA":
-                        list.Find(x => x.AirportName == flight.Dest).LGA++;
+                        list.Find(x => x.AirportName == i.Dest).LGA++;
                         break;
                 }
-            }
+            });
 
             return list.OrderByDescending(x => x.EWR + x.JFK + x.LGA).Take(10);
         }
 
-        public IEnumerable<DestinationFlightCount> GetTopTenNumberOfFlights()
+        public async Task<IEnumerable<DestinationFlightCount>> GetTopTenNumberOfFlights()
         {
             var list = new List<DestinationFlightCount>();
-            foreach (var flight in context.Flights)
+
+            await context.Flights.AsQueryable().ForEachAsync(i =>
             {
-                if (!list.Any(x => x.Dest == flight.Dest))
+                if (!list.Any(x => x.Dest == i.Dest))
                 {
-                    list.Add(new DestinationFlightCount() { Dest = flight.Dest });
+                    list.Add(new DestinationFlightCount() { Dest = i.Dest });
                 }
 
-                list.Find(x => x.Dest == flight.Dest).FlightsCount++;
-            }
+                list.Find(x => x.Dest == i.Dest).FlightsCount++;
+            });
 
             return list.OrderByDescending(x => x.FlightsCount).Take(10);
         }
