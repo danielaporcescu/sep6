@@ -1,5 +1,4 @@
 ﻿using DataContext.Repositories;
-using FlightsWebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Services.Models;
 using System.Collections.Generic;
@@ -32,7 +31,7 @@ namespace FlightsWebApplication.Controllers
 
         [HttpGet]
         [Route("/api/flights-per-month-from-dest")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<FlightsFromDestinationsPerMonth>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<FlightsFromOriginsPerMonth>))]
         [ProducesResponseType(400)]
         public IActionResult GetFlightsPerMonthPerDestination()
         {
@@ -45,7 +44,7 @@ namespace FlightsWebApplication.Controllers
 
         [HttpGet]
         [Route("/api/flights-per-month-from-dest-percentage")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<FlightsFromDestinationsPerMonth>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<FlightsFromOriginsPerMonth>))]
         [ProducesResponseType(400)]
         public IActionResult GetFlightsPerMonthPerDestinationPercentage()
         {
@@ -75,7 +74,7 @@ namespace FlightsWebApplication.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetTopTenNumberOfFlightsForMainOrigins()
         {
-            var flights = flightsRepository.GetTopTenNumberOfFlightsForMainOrigins();
+            var flights = flightsRepository.GetTopTenNumberOfFlightsForOrigins();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -89,6 +88,19 @@ namespace FlightsWebApplication.Controllers
         public IActionResult GetMeanAirTime()
         {
             var flights = flightsRepository.GetMeanAirTime();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(flights.Result);
+        }
+
+        [HttpGet]
+        [Route("/api/chart-data")]
+        [ProducesResponseType(200, Type = typeof(ChartData))]
+        [ProducesResponseType(400)]
+        public IActionResult GetChartDate()
+        {
+            var flights = flightsRepository.GetChartData();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 

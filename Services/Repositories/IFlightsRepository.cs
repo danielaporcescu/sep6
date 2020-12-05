@@ -1,5 +1,4 @@
-﻿using FlightsWebApplication.Models;
-using Services.Models;
+﻿using Services.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,14 +8,16 @@ namespace DataContext.Repositories
     {
         public Task<IEnumerable<MonthFlightNumber>> GetNumberOfFlightsPerMonth();
 
-        public Task<IEnumerable<FlightsFromDestinationsPerMonth>> GetNumberOfFlightsPerMonthFromDestinations();
+        public Task<IEnumerable<FlightsFromOriginsPerMonth>> GetNumberOfFlightsPerMonthFromDestinations();
 
-        public Task<IEnumerable<FlightsFromDestinationsPerMonth>> GetPercentageOfFlightsPerMonthFromDestinations();
+        public Task<IEnumerable<FlightsFromOriginsPerMonth>> GetPercentageOfFlightsPerMonthFromDestinations();
 
         public Task<IEnumerable<DestinationFlightCount>> GetTopTenNumberOfFlights();
 
-        public Task<IEnumerable<AirportNameMainAirportsCount>> GetTopTenNumberOfFlightsForMainOrigins();
+        public Task<IEnumerable<AirportNameMainAirportsCount>> GetTopTenNumberOfFlightsForOrigins();
 
         public Task<MeanAirTime> GetMeanAirTime();
+
+        public Task<ChartData> GetChartData();
     }
 }
