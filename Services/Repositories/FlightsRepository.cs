@@ -34,7 +34,7 @@ namespace DataContext.Repositories
         {
             var list = new List<FlightsFromDestinationsPerMonth>();
 
-            await context.Flights.AsQueryable().ForEachAsync(i =>
+            await context.Flights.ForEachAsync(i =>
             {
                 if (!list.Any(x => x.Month == i.Month))
                 {
@@ -79,7 +79,7 @@ namespace DataContext.Repositories
         public async Task<IEnumerable<AirportNameMainAirportsCount>> GetTopTenNumberOfFlightsForMainOrigins()
         {
             var list = new List<AirportNameMainAirportsCount>();
-            await context.Flights.AsQueryable().ForEachAsync(i =>
+            await context.Flights.ForEachAsync(i =>
             {
                 if (!list.Any(x => x.AirportName == i.Dest))
                 {
@@ -109,7 +109,7 @@ namespace DataContext.Repositories
         {
             var list = new List<DestinationFlightCount>();
 
-            await context.Flights.AsQueryable().ForEachAsync(i =>
+            await context.Flights.ForEachAsync(i =>
             {
                 if (!list.Any(x => x.Dest == i.Dest))
                 {
@@ -120,6 +120,39 @@ namespace DataContext.Repositories
             });
 
             return list.OrderByDescending(x => x.FlightsCount).Take(10);
+        }
+
+        public async Task<MeanAirTime> GetMeanAirTime()
+        {
+            var meanAirTime = new MeanAirTime();
+            int ewrCount, jfkCount, lgaCount;
+            ewrCount = jfkCount = lgaCount = 0;
+
+            await context.Flights.ForEachAsync(i =>
+            {
+                switch (i.Origin)
+                {
+                    case "EWR":
+                        meanAirTime.EWR += i.Air_Time ?? 0;
+                        ewrCount++;
+                        break;
+
+                    case "JFK":
+                        meanAirTime.JFK += i.Air_Time ?? 0;
+                        jfkCount++;
+                        break;
+
+                    case "LGA":
+                        meanAirTime.LGA += i.Air_Time ?? 0;
+                        lgaCount++;
+                        break;
+                }
+            });
+            meanAirTime.EWR /= ewrCount;
+            meanAirTime.JFK /= jfkCount;
+            meanAirTime.LGA /= lgaCount;
+
+            return meanAirTime;
         }
     }
 }

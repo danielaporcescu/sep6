@@ -81,5 +81,18 @@ namespace FlightsWebApplication.Controllers
 
             return Ok(flights.Result);
         }
+
+        [HttpGet]
+        [Route("/api/mean-air-time")]
+        [ProducesResponseType(200, Type = typeof(MeanAirTime))]
+        [ProducesResponseType(400)]
+        public IActionResult GetMeanAirTime()
+        {
+            var flights = flightsRepository.GetMeanAirTime();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(flights.Result);
+        }
     }
 }
