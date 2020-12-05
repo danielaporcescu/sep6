@@ -34,16 +34,28 @@ namespace DataContext.Repositories
         {
             var list = new List<FlightsFromDestinationsPerMonth>();
 
-            for (int i = 1; i < 13; i++)
+            await context.Flights.AsQueryable().ForEachAsync(i =>
             {
-                list.Add(new FlightsFromDestinationsPerMonth()
+                if (!list.Any(x => x.Month == i.Month))
                 {
-                    Month = i,
-                    EWR = await context.Flights.CountAsync(x => x.Origin == "EWR" && x.Month == i),
-                    JFK = await context.Flights.CountAsync(x => x.Origin == "JFK" && x.Month == i),
-                    LGA = await context.Flights.CountAsync(x => x.Origin == "LGA" && x.Month == i),
-                });
-            }
+                    list.Add(new FlightsFromDestinationsPerMonth() { Month = i.Month });
+                }
+
+                switch (i.Origin)
+                {
+                    case "EWR":
+                        list.Find(x => x.Month == i.Month).EWR++;
+                        break;
+
+                    case "JFK":
+                        list.Find(x => x.Month == i.Month).JFK++;
+                        break;
+
+                    case "LGA":
+                        list.Find(x => x.Month == i.Month).LGA++;
+                        break;
+                }
+            });
 
             return list;
         }
