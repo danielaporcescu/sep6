@@ -61,5 +61,51 @@ namespace DataContext.Repositories
 
             return list;
         }
+
+        public IEnumerable<AirportNameMainAirportsCount> GetTopTenNumberOfFlightsForMainOrigins()
+        {
+            var list = new List<AirportNameMainAirportsCount>();
+
+            foreach (var flight in context.Flights)
+            {
+                if (!list.Any(x => x.AirportName == flight.Dest))
+                {
+                    list.Add(new AirportNameMainAirportsCount() { AirportName = flight.Dest });
+                }
+
+                switch (flight.Origin)
+                {
+                    case "EWR":
+                        list.Find(x => x.AirportName == flight.Dest).EWR++;
+                        break;
+
+                    case "JFK":
+                        list.Find(x => x.AirportName == flight.Dest).JFK++;
+                        break;
+
+                    case "LGA":
+                        list.Find(x => x.AirportName == flight.Dest).LGA++;
+                        break;
+                }
+            }
+
+            return list.OrderByDescending(x => x.EWR + x.JFK + x.LGA).Take(10);
+        }
+
+        public IEnumerable<DestinationFlightCount> GetTopTenNumberOfFlights()
+        {
+            var list = new List<DestinationFlightCount>();
+            foreach (var flight in context.Flights)
+            {
+                if (!list.Any(x => x.Dest == flight.Dest))
+                {
+                    list.Add(new DestinationFlightCount() { Dest = flight.Dest });
+                }
+
+                list.Find(x => x.Dest == flight.Dest).FlightsCount++;
+            }
+
+            return list.OrderByDescending(x => x.FlightsCount).Take(10);
+        }
     }
 }

@@ -12,6 +12,8 @@ namespace DataContext.Repositories
 
         public IEnumerable<FlightsFromDestinationsPerMonth> GetPercentageOfFlightsPerMonthFromDestinations();
 
-        //public IDictionary<string, int> GetTopTenDestinationsAndNumberOfFlights();
+        public IEnumerable<DestinationFlightCount> GetTopTenNumberOfFlights();
+
+        public IEnumerable<AirportNameMainAirportsCount> GetTopTenNumberOfFlightsForMainOrigins();
     }
 }
