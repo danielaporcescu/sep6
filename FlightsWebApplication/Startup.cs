@@ -32,6 +32,16 @@ namespace FlightsWebApplication
             services.AddTransient<IAirlineRepository, AirlineRepository>();
             services.AddTransient<IFlightsRepository, FlightsRepository>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "CORS rules",
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:3000/",
+                                                          "https://uaa-web-app.azurewebsites.net");
+                                  });
+            });
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -60,7 +70,9 @@ namespace FlightsWebApplication
 
             app.UseRouting();
 
+            app.UseCors("CORS rules");
             app.UseEndpoints(endpoints =>
+
             {
                 endpoints.MapControllers();
             });
