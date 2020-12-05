@@ -37,8 +37,13 @@ namespace FlightsWebApplication
                 options.AddPolicy(name: "CORS rules",
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:3000/",
-                                                          "https://uaa-web-app.azurewebsites.net");
+                                      //builder.WithOrigins("http://localhost:3000/",
+                                      //                    "https://uaa-web-app.azurewebsites.net",
+                                      //                    "http://192.168.50.76:3000/",
+                                      //                    "http://192.168.50.76");
+                                      builder.AllowAnyOrigin();
+                                      builder.AllowAnyMethod();
+                                      builder.AllowAnyHeader();
                                   });
             });
 
@@ -47,7 +52,6 @@ namespace FlightsWebApplication
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UAA Api", Version = "v1" });
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
