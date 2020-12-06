@@ -16,6 +16,6 @@ namespace DataContext.Context
         public DbSet<FlightDc> Flights { get; set; }
 
         //public DbSet<Plane> Planes { get; set; }
-        //public DbSet<Weather> Weather { get; set; }
+        public DbSet<Weather> Weather { get; set; }
     }
 }

@@ -1,6 +1,6 @@
-﻿using DataContext.Repositories;
-using FlightsWebApplication.Models;
+﻿using FlightsWebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
+using Services.Repositories.Interfaces;
 using System.Collections.Generic;
 
 namespace FlightsWebApplication.Controllers

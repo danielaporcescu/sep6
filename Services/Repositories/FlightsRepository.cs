@@ -1,11 +1,12 @@
 ﻿using DataContext.Context;
 using Microsoft.EntityFrameworkCore;
 using Services.Models;
+using Services.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DataContext.Repositories
+namespace Services.Repositories
 {
     public class FlightsRepository
         : IFlightsRepository

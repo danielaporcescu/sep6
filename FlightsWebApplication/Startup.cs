@@ -1,5 +1,4 @@
 using DataContext.Context;
-using DataContext.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Services.Repositories;
+using Services.Repositories.Interfaces;
 
 namespace FlightsWebApplication
 {
@@ -28,9 +29,12 @@ namespace FlightsWebApplication
         {
             services.AddDbContext<UAAContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("AzureDbConnection")));
+
             services.AddMvc();
+
             services.AddTransient<IAirlineRepository, AirlineRepository>();
             services.AddTransient<IFlightsRepository, FlightsRepository>();
+            services.AddTransient<IWeatherRepository, WeatherRepository>();
 
             services.AddCors(options =>
             {

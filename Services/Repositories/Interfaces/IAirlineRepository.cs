@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DataContext.Repositories
+namespace Services.Repositories.Interfaces
 {
     public interface IAirlineRepository
     {
