@@ -27,5 +27,19 @@ namespace FlightsWebApplication.Controllers
 
             return Ok(result.Result);
         }
+
+        [HttpGet]
+        [Route("/api/weather/values-for-main-origins")]
+        [ProducesResponseType(200, Type = typeof(ValuesForOrigins))]
+        [ProducesResponseType(400)]
+        public IActionResult GetAllValuesForOrigins()
+
+        {
+            var result = weatherRepository.GetAllValuesForOrigins();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(result.Result);
+        }
     }
 }
