@@ -256,7 +256,7 @@ namespace Services.Repositories
             meanAirTime.LGA /= lgaCount;
 
             // Third requirement
-            flightsPerMonthFromOriginPercentage = flightsPerMonthFromOrigins;
+            flightsPerMonthFromOriginPercentage = flightsPerMonthFromOrigins.Select(x => x.Copy()).ToList();
             foreach (var entry in flightsPerMonthFromOriginPercentage)
             {
                 var total = entry.EWR + entry.JFK + entry.LGA;
@@ -268,9 +268,9 @@ namespace Services.Repositories
 
             return new ChartData()
             {
-                FlightsPerMonth = flightsPerMonth,
-                FlightsPerMonthFromOrigins = flightsPerMonthFromOrigins,
-                FlightsPerMonthFromOriginPercentage = flightsPerMonthFromOriginPercentage,
+                FlightsPerMonth = flightsPerMonth.OrderBy(x => x.Month),
+                FlightsPerMonthFromOrigins = flightsPerMonthFromOrigins.OrderBy(x => x.Month),
+                FlightsPerMonthFromOriginPercentage = flightsPerMonthFromOriginPercentage.OrderBy(x => x.Month),
                 TopTenDestinationsByFlights = topTenDestinationsByFlights.OrderByDescending(x => x.FlightsCount).Take(10),
                 TopTenDestinationsByFlightsFromOrigins = topTenDestinationsByFlightsFromOrigins.OrderByDescending(x => x.EWR + x.JFK + x.LGA).Take(10),
                 MeanAirTime = meanAirTime
