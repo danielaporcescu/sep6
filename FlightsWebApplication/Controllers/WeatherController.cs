@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Services.Models.Common;
 using Services.Models.Weather;
 using Services.Repositories.Interfaces;
+using System.Collections.Generic;
 
 namespace FlightsWebApplication.Controllers
 {
@@ -36,6 +38,20 @@ namespace FlightsWebApplication.Controllers
 
         {
             var result = weatherRepository.GetAllValuesForOrigins();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(result.Result);
+        }
+
+        [HttpGet]
+        [Route("/api/weather/jfk-mean-temp-daily")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<DateValueCounted>))]
+        [ProducesResponseType(400)]
+        public IActionResult DailyMeanTemperatureJFK()
+
+        {
+            var result = weatherRepository.DailyMeanTemperatureJFK();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 

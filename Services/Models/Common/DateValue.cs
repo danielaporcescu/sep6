@@ -2,10 +2,11 @@
 
 namespace Services.Models.Common
 {
-    public class DateValue
+    public class DateValueCounted
     {
         public DateTime Date { get; set; }
 
-        public double Value { get; set; }
+        public double? Value { get; set; }
+        public int Count { get; set; } = 1;
     }
 }

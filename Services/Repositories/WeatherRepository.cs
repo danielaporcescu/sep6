@@ -1,9 +1,13 @@
 ﻿using DataContext.Context;
 using Microsoft.EntityFrameworkCore;
+using Services.Helpers;
+using Services.Models.Common;
 using Services.Models.Weather;
 using Services.Repositories.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Services.Helpers;
 
 namespace Services.Repositories
 {
@@ -65,6 +69,35 @@ namespace Services.Repositories
                             break;
                     }
                 }
+            });
+
+            return result;
+        }
+
+        public async Task<IEnumerable<DateValueCounted>> DailyMeanTemperatureJFK()
+        {
+            var result = new List<DateValueCounted>();
+
+            await context.Weather.ForEachAsync(data =>
+            {
+                if (data.Origin == "JFK")
+                {
+                    if (result.Any(x => x.Date.Year == data.Year && x.Date.Month == data.Month && x.Date.Day == data.Day))
+                    {
+                        var item = result.Find(x => x.Date.Year == data.Year && x.Date.Month == data.Month && x.Date.Day == data.Day);
+                        item.Count++;
+                        item.Value += data.Temp;
+                    }
+                    else
+                    {
+                        result.Add(new DateValueCounted() { Value = data.Temp, Date = new DateTime(data.Year, data.Month, data.Day) });
+                    }
+                }
+            });
+
+            result.ForEach(item =>
+            {
+                item.Value /= item.Count;
             });
 
             return result;
