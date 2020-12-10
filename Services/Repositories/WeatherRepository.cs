@@ -90,14 +90,14 @@ namespace Services.Repositories
                     }
                     else
                     {
-                        result.Add(new DateValueCounted() { Value = Converters.FarenheitToCelsius((double)data.Temp), Date = new DateTime(data.Year, data.Month, data.Day) });
+                        result.Add(new DateValueCounted() { Value = data.Temp, Date = new DateTime(data.Year, data.Month, data.Day) });
                     }
                 }
             });
 
             result.ForEach(item =>
             {
-                item.Value /= item.Count;
+                item.Value = Converters.FarenheitToCelsius((double)item.Value) / item.Count;
             });
 
             return result;
