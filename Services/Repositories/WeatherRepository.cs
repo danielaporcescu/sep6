@@ -52,20 +52,23 @@ namespace Services.Repositories
 
             await context.Weather.ForEachAsync(data =>
             {
-                if (data.Temp != null)
-                {
+            if (data.Temp != null)
+            {
+                var date = new DateTime(data.Year, data.Month, data.Day);
+                date.AddHours(data.Hour);
+                var dateValue = new DateValue() { Value = Converters.FarenheitToCelsius((double)data.Temp), Date = date };
                     switch (data.Origin)
                     {
                         case "EWR":
-                            result.EWRValues.Add(Converters.FarenheitToCelsius((double)data.Temp));
+                            result.EWRValues.Add(dateValue);
                             break;
 
                         case "JFK":
-                            result.JFKValues.Add(Converters.FarenheitToCelsius((double)data.Temp));
+                            result.JFKValues.Add(dateValue);
                             break;
 
                         case "LGA":
-                            result.LGAValues.Add(Converters.FarenheitToCelsius((double)data.Temp));
+                            result.LGAValues.Add(dateValue);
                             break;
                     }
                 }
