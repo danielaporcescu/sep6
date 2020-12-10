@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Models.Common
 {
-   public class DateValue
+    public class DateValueCounted
     {
         public DateTime Date { get; set; }
-
         public double? Value { get; set; }
+        public int Count { get; set; } = 1;
     }
 }
