@@ -57,5 +57,18 @@ namespace FlightsWebApplication.Controllers
 
             return Ok(result.Result);
         }
+
+        [HttpGet]
+        [Route("/api/weather/mean-temp-daily-origin")]
+        [ProducesResponseType(200, Type = typeof(ValuesForOrigins))]
+        [ProducesResponseType(400)]
+        public IActionResult DailyMeanTemperatureOrigins()
+        {
+            var result = weatherRepository.DailyMeanTemperatureOrigins();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(result.Result);
+        }
     }
 }

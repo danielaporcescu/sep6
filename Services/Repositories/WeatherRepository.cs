@@ -52,11 +52,11 @@ namespace Services.Repositories
 
             await context.Weather.ForEachAsync(data =>
             {
-            if (data.Temp != null)
-            {
-                var date = new DateTime(data.Year, data.Month, data.Day);
-                date.AddHours(data.Hour);
-                var dateValue = new DateValue() { Value = Converters.FarenheitToCelsius((double)data.Temp), Date = date };
+                if (data.Temp != null)
+                {
+                    var date = new DateTime(data.Year, data.Month, data.Day);
+                    date.AddHours(data.Hour);
+                    var dateValue = new DateValue() { Value = Converters.FarenheitToCelsius((double)data.Temp), Date = date };
                     switch (data.Origin)
                     {
                         case "EWR":
@@ -101,6 +101,78 @@ namespace Services.Repositories
             result.ForEach(item =>
             {
                 item.Value = Converters.FarenheitToCelsius((double)item.Value) / item.Count;
+            });
+
+            return result;
+        }
+
+        public async Task<ValuesForOriginsCounted> DailyMeanTemperatureOrigins()
+        {
+            var result = new ValuesForOriginsCounted();
+
+            await context.Weather.ForEachAsync(data =>
+            {
+                if (data.Temp != null)
+                {
+                    var date = new DateTime(data.Year, data.Month, data.Day);
+                    date.AddHours(data.Hour);
+                    var dateValue = new DateValueCounted() { Value = Converters.FarenheitToCelsius((double)data.Temp), Date = date };
+
+                    switch (data.Origin)
+                    {
+                        case "EWR":
+                            if (result.EWRValues.Any(x => x.Date == date))
+                            {
+                                var item = result.EWRValues.Find(x => x.Date == date);
+                                item.Value += dateValue.Value;
+                                item.Count++;
+                            }
+                            else
+                            {
+                                result.EWRValues.Add(dateValue);
+                            }
+                            break;
+
+                        case "JFK":
+                            if (result.JFKValues.Any(x => x.Date == date))
+                            {
+                                var item = result.JFKValues.Find(x => x.Date == date);
+                                item.Value += dateValue.Value;
+                                item.Count++;
+                            }
+                            else
+                            {
+                                result.JFKValues.Add(dateValue);
+                            }
+                            break;
+
+                        case "LGA":
+                            if (result.LGAValues.Any(x => x.Date == date))
+                            {
+                                var item = result.LGAValues.Find(x => x.Date == date);
+                                item.Value += dateValue.Value;
+                                item.Count++;
+                            }
+                            else
+                            {
+                                result.LGAValues.Add(dateValue);
+                            }
+                            break;
+                    }
+                }
+            });
+
+            result.EWRValues.ForEach(x =>
+            {
+                x.Value /= x.Count;
+            });
+            result.JFKValues.ForEach(x =>
+            {
+                x.Value /= x.Count;
+            });
+            result.LGAValues.ForEach(x =>
+            {
+                x.Value /= x.Count;
             });
 
             return result;
