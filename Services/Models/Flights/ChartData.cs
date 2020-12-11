@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Services.Models
+namespace Services.Models.Flights
 {
     public class ChartData
     {
@@ -10,5 +10,6 @@ namespace Services.Models
         public IEnumerable<DestinationFlightCount> TopTenDestinationsByFlights { get; set; }
         public IEnumerable<AirportNameMainAirportsCount> TopTenDestinationsByFlightsFromOrigins { get; set; }
         public MeanAirTime MeanAirTime { get; set; }
+        public OriginDelays OriginDelays { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Services.Models;
+using Services.Models.Flights;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,5 +20,7 @@ namespace Services.Repositories.Interfaces
         public Task<MeanAirTime> GetMeanAirTime();
 
         public Task<ChartData> GetChartData();
+
+        public Task<OriginDelays> GetOriginDelays();
     }
 }
