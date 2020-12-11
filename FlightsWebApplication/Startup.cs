@@ -35,6 +35,8 @@ namespace FlightsWebApplication
             services.AddTransient<IAirlineRepository, AirlineRepository>();
             services.AddTransient<IFlightsRepository, FlightsRepository>();
             services.AddTransient<IWeatherRepository, WeatherRepository>();
+            services.AddTransient<IPlanesRepository, PlanesRepository>();
+
 
             services.AddCors(options =>
             {
