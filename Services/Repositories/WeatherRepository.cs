@@ -177,5 +177,116 @@ namespace Services.Repositories
 
             return result;
         }
+
+        public async Task<WeatherChartData> GetWeatherChartData()
+        {
+            var weatherObservationsOrigin = new WeatherObservationsOrigin();
+            var valuesForOrigins = new ValuesForOrigins();
+            var dailyMeanTemperatureJFK = new List<DateValueCounted>();
+            var dailyMeanTemperatureOrigins = new ValuesForOriginsCounted();
+
+            await context.Weather.ForEachAsync(data =>
+            {
+                var date = new DateTime(data.Year, data.Month, data.Day);
+                date.AddHours(data.Hour);
+                if (data.Temp != null)
+                {
+                    var dateValue = new DateValue() { Value = Converters.FarenheitToCelsius((double)data.Temp), Date = date };
+
+                    switch (data.Origin)
+                    {
+                        case "EWR":
+                            weatherObservationsOrigin.EWR++;
+                            valuesForOrigins.EWRValues.Add(dateValue);
+                            break;
+
+                        case "JFK":
+                            weatherObservationsOrigin.JFK++;
+                            valuesForOrigins.JFKValues.Add(dateValue);
+
+                            break;
+
+                        case "LGA":
+                            weatherObservationsOrigin.LGA++;
+                            valuesForOrigins.LGAValues.Add(dateValue);
+
+                            break;
+                    }
+                }
+                if (data.Origin == "JFK")
+                {
+                    if (dailyMeanTemperatureJFK.Any(x => x.Date.Year == data.Year && x.Date.Month == data.Month && x.Date.Day == data.Day))
+                    {
+                        var item = dailyMeanTemperatureJFK.Find(x => x.Date.Year == data.Year && x.Date.Month == data.Month && x.Date.Day == data.Day);
+                        item.Count++;
+                        item.Value += data.Temp;
+                    }
+                    else
+                    {
+                        dailyMeanTemperatureJFK.Add(new DateValueCounted() { Value = data.Temp, Date = new DateTime(data.Year, data.Month, data.Day) });
+                    }
+                }
+
+                if (data.Temp != null)
+                {
+                    var dateValueCounted = new DateValueCounted() { Value = Converters.FarenheitToCelsius((double)data.Temp), Date = date };
+
+                    switch (data.Origin)
+                    {
+                        case "EWR":
+                            if (dailyMeanTemperatureOrigins.EWRValues.Any(x => x.Date == date))
+                            {
+                                var item = dailyMeanTemperatureOrigins.EWRValues.Find(x => x.Date == date);
+                                item.Value += dateValueCounted.Value;
+                                item.Count++;
+                            }
+                            else
+                            {
+                                dailyMeanTemperatureOrigins.EWRValues.Add(dateValueCounted);
+                            }
+                            break;
+
+                        case "JFK":
+                            if (dailyMeanTemperatureOrigins.JFKValues.Any(x => x.Date == date))
+                            {
+                                var item = dailyMeanTemperatureOrigins.JFKValues.Find(x => x.Date == date);
+                                item.Value += dateValueCounted.Value;
+                                item.Count++;
+                            }
+                            else
+                            {
+                                dailyMeanTemperatureOrigins.JFKValues.Add(dateValueCounted);
+                            }
+                            break;
+
+                        case "LGA":
+                            if (dailyMeanTemperatureOrigins.LGAValues.Any(x => x.Date == date))
+                            {
+                                var item = dailyMeanTemperatureOrigins.LGAValues.Find(x => x.Date == date);
+                                item.Value += dateValueCounted.Value;
+                                item.Count++;
+                            }
+                            else
+                            {
+                                dailyMeanTemperatureOrigins.LGAValues.Add(dateValueCounted);
+                            }
+                            break;
+                    }
+                }
+            });
+
+            dailyMeanTemperatureJFK.ForEach(item =>
+            {
+                item.Value = Converters.FarenheitToCelsius((double)item.Value) / item.Count;
+            });
+
+            return new WeatherChartData()
+            {
+                WeatherObservationsOrigin = weatherObservationsOrigin,
+                ValuesForOrigins = valuesForOrigins,
+                DailyMeanTemperatureJFK = dailyMeanTemperatureJFK,
+                DailyMeanTemperatureOrigins = dailyMeanTemperatureOrigins
+            };
+        }
     }
 }

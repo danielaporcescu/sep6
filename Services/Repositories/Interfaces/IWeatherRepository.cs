@@ -14,5 +14,7 @@ namespace Services.Repositories.Interfaces
         public Task<IEnumerable<DateValueCounted>> DailyMeanTemperatureJFK();
 
         public Task<ValuesForOriginsCounted> DailyMeanTemperatureOrigins();
+
+        public Task<WeatherChartData> GetWeatherChartData();
     }
 }
