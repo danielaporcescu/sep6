@@ -1,6 +1,6 @@
 ﻿using DataContext.Context;
 using Microsoft.EntityFrameworkCore;
-using Services.Models;
+using Services.Models.Flights;
 using Services.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -155,6 +155,48 @@ namespace Services.Repositories
             return meanAirTime;
         }
 
+        public async Task<OriginDelays> GetOriginDelays()
+        {
+            var counted = new OriginDelaysCounted();
+
+            await context.Flights.ForEachAsync(i =>
+            {
+                switch (i.Origin)
+                {
+                    case "EWR":
+                        counted.EWRArrivalDelay.Value += i.Arr_Delay ?? 0;
+                        counted.EWRArrivalDelay.Count += i.Arr_Delay != null ? 1 : 0;
+                        counted.EWRDepartureDelay.Value += i.Dep_Delay ?? 0;
+                        counted.EWRDepartureDelay.Count += i.Dep_Delay != null ? 1 : 0;
+                        break;
+
+                    case "JFK":
+                        counted.JFKArrivalDelay.Value += i.Arr_Delay ?? 0;
+                        counted.JFKArrivalDelay.Count += i.Arr_Delay != null ? 1 : 0;
+                        counted.JFKDepartureDelay.Value += i.Dep_Delay ?? 0;
+                        counted.JFKDepartureDelay.Count += i.Dep_Delay != null ? 1 : 0;
+                        break;
+
+                    case "LGA":
+                        counted.LGAArrivalDelay.Value += i.Arr_Delay ?? 0;
+                        counted.LGAArrivalDelay.Count += i.Arr_Delay != null ? 1 : 0;
+                        counted.LGADepartureDelay.Value += i.Dep_Delay ?? 0;
+                        counted.LGADepartureDelay.Count += i.Dep_Delay != null ? 1 : 0;
+                        break;
+                }
+            });
+
+            return new OriginDelays()
+            {
+                EWRArrivalDelay = (double)counted.EWRArrivalDelay.Value / counted.EWRArrivalDelay.Count,
+                EWRDepartureDelay = (double)counted.EWRDepartureDelay.Value / counted.EWRDepartureDelay.Count,
+                JFKArrivalDelay = (double)counted.JFKArrivalDelay.Value / counted.JFKArrivalDelay.Count,
+                JFKDepartureDelay = (double)counted.JFKDepartureDelay.Value / counted.JFKDepartureDelay.Count,
+                LGAArrivalDelay = (double)counted.LGAArrivalDelay.Value / counted.LGAArrivalDelay.Count,
+                LGADepartureDelay = (double)counted.LGADepartureDelay.Value / counted.LGADepartureDelay.Count,
+            };
+        }
+
         public async Task<ChartData> GetChartData()
         {
             var flightsPerMonth = new List<MonthFlightNumber>();
@@ -174,6 +216,8 @@ namespace Services.Repositories
             var meanAirTime = new MeanAirTime();
             int ewrCount, jfkCount, lgaCount;
             ewrCount = jfkCount = lgaCount = 0;
+
+            var originsDelaysCounted = new OriginDelaysCounted();
 
             await context.Flights.ForEachAsync(flight =>
             {
@@ -248,6 +292,30 @@ namespace Services.Repositories
                         lgaCount++;
                         break;
                 }
+                //
+                switch (flight.Origin)
+                {
+                    case "EWR":
+                        originsDelaysCounted.EWRArrivalDelay.Value += flight.Arr_Delay ?? 0;
+                        originsDelaysCounted.EWRArrivalDelay.Count += flight.Arr_Delay != null ? 1 : 0;
+                        originsDelaysCounted.EWRDepartureDelay.Value += flight.Dep_Delay ?? 0;
+                        originsDelaysCounted.EWRDepartureDelay.Count += flight.Dep_Delay != null ? 1 : 0;
+                        break;
+
+                    case "JFK":
+                        originsDelaysCounted.JFKArrivalDelay.Value += flight.Arr_Delay ?? 0;
+                        originsDelaysCounted.JFKArrivalDelay.Count += flight.Arr_Delay != null ? 1 : 0;
+                        originsDelaysCounted.JFKDepartureDelay.Value += flight.Dep_Delay ?? 0;
+                        originsDelaysCounted.JFKDepartureDelay.Count += flight.Dep_Delay != null ? 1 : 0;
+                        break;
+
+                    case "LGA":
+                        originsDelaysCounted.LGAArrivalDelay.Value += flight.Arr_Delay ?? 0;
+                        originsDelaysCounted.LGAArrivalDelay.Count += flight.Arr_Delay != null ? 1 : 0;
+                        originsDelaysCounted.LGADepartureDelay.Value += flight.Dep_Delay ?? 0;
+                        originsDelaysCounted.LGADepartureDelay.Count += flight.Dep_Delay != null ? 1 : 0;
+                        break;
+                }
             });
 
             // Sixth requirement
@@ -266,6 +334,16 @@ namespace Services.Repositories
                 entry.LGA = entry.LGA * 100 / total;
             }
 
+            var originDelays = new OriginDelays()
+            {
+                EWRArrivalDelay = (double)originsDelaysCounted.EWRArrivalDelay.Value / originsDelaysCounted.EWRArrivalDelay.Count,
+                EWRDepartureDelay = (double)originsDelaysCounted.EWRDepartureDelay.Value / originsDelaysCounted.EWRDepartureDelay.Count,
+                JFKArrivalDelay = (double)originsDelaysCounted.JFKArrivalDelay.Value / originsDelaysCounted.JFKArrivalDelay.Count,
+                JFKDepartureDelay = (double)originsDelaysCounted.JFKDepartureDelay.Value / originsDelaysCounted.JFKDepartureDelay.Count,
+                LGAArrivalDelay = (double)originsDelaysCounted.LGAArrivalDelay.Value / originsDelaysCounted.LGAArrivalDelay.Count,
+                LGADepartureDelay = (double)originsDelaysCounted.LGADepartureDelay.Value / originsDelaysCounted.LGADepartureDelay.Count,
+            };
+
             return new ChartData()
             {
                 FlightsPerMonth = flightsPerMonth.OrderBy(x => x.Month),
@@ -273,7 +351,8 @@ namespace Services.Repositories
                 FlightsPerMonthFromOriginPercentage = flightsPerMonthFromOriginPercentage.OrderBy(x => x.Month),
                 TopTenDestinationsByFlights = topTenDestinationsByFlights.OrderByDescending(x => x.FlightsCount).Take(10),
                 TopTenDestinationsByFlightsFromOrigins = topTenDestinationsByFlightsFromOrigins.OrderByDescending(x => x.EWR + x.JFK + x.LGA).Take(10),
-                MeanAirTime = meanAirTime
+                MeanAirTime = meanAirTime,
+                OriginDelays = originDelays
             };
         }
     }

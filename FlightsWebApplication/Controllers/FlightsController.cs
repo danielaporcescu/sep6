@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Services.Models;
+using Services.Models.Flights;
 using Services.Repositories.Interfaces;
 using System.Collections.Generic;
 
@@ -88,6 +89,19 @@ namespace FlightsWebApplication.Controllers
         public IActionResult GetMeanAirTime()
         {
             var flights = flightsRepository.GetMeanAirTime();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(flights.Result);
+        }
+
+        [HttpGet]
+        [Route("/api/mean-delays")]
+        [ProducesResponseType(200, Type = typeof(OriginDelays))]
+        [ProducesResponseType(400)]
+        public IActionResult GetOriginDelays()
+        {
+            var flights = flightsRepository.GetOriginDelays();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
