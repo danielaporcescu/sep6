@@ -70,5 +70,18 @@ namespace FlightsWebApplication.Controllers
 
             return Ok(result.Result);
         }
+
+        [HttpGet]
+        [Route("/api/weather/chart-data")]
+        [ProducesResponseType(200, Type = typeof(WeatherChartData))]
+        [ProducesResponseType(400)]
+        public IActionResult GetWeatherChartData()
+        {
+            var result = weatherRepository.GetWeatherChartData();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(result.Result);
+        }
     }
 }
