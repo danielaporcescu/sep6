@@ -71,7 +71,7 @@ namespace FlightsWebApplication.Controllers
 
         [HttpGet]
         [Route("/api/top-10-dest-nr-of-flights-per-main-origins")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<DestinationFlightCount>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<AirportNameMainAirportsCount>))]
         [ProducesResponseType(400)]
         public IActionResult GetTopTenNumberOfFlightsForMainOrigins()
         {
