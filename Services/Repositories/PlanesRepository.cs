@@ -1,5 +1,5 @@
 ﻿using DataContext.Context;
-using FlightsWebApplication.Models;
+using DataContext.Entities;
 using Microsoft.EntityFrameworkCore;
 using Services.Repositories.Interfaces;
 using System.Collections.Generic;

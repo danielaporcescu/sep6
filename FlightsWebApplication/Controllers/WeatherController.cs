@@ -20,7 +20,7 @@ namespace FlightsWebApplication.Controllers
         [Route("/api/weather/count-for-main-origins")]
         [ProducesResponseType(200, Type = typeof(WeatherObservationsOrigin))]
         [ProducesResponseType(400)]
-        public IActionResult GetAirlines()
+        public IActionResult GetWeatherObservationsForOrigins()
 
         {
             var result = weatherRepository.GetWeatherObservationsForOrigins();
@@ -60,7 +60,7 @@ namespace FlightsWebApplication.Controllers
 
         [HttpGet]
         [Route("/api/weather/mean-temp-daily-origin")]
-        [ProducesResponseType(200, Type = typeof(ValuesForOrigins))]
+        [ProducesResponseType(200, Type = typeof(ValuesForOriginsCounted))]
         [ProducesResponseType(400)]
         public IActionResult DailyMeanTemperatureOrigins()
         {

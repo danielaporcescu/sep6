@@ -1,4 +1,4 @@
-﻿using FlightsWebApplication.Models;
+﻿using DataContext.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataContext.Context

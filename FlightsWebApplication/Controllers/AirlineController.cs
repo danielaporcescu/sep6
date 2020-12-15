@@ -1,4 +1,4 @@
-﻿using FlightsWebApplication.Models;
+﻿using DataContext.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Services.Repositories.Interfaces;
 using System.Collections.Generic;
