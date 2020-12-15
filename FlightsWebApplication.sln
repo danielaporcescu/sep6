@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataContext", "DataContext\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{94B4BA54-79C1-4FC5-A7B5-EAF1B4898CAF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesTest", "ServicesTest\ServicesTest.csproj", "{0F27D011-FB29-427F-87F9-2625A754F5F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightsWebAppTest", "ServicesTest\FlightsWebAppTest.csproj", "{0F27D011-FB29-427F-87F9-2625A754F5F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
