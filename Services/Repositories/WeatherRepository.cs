@@ -100,7 +100,7 @@ namespace Services.Repositories
 
             result.ForEach(item =>
             {
-                item.Value = Converters.FarenheitToCelsius((double)item.Value) / item.Count;
+                item.Value = Converters.FarenheitToCelsius((double)item.Value / item.Count) ;
             });
 
             return result;

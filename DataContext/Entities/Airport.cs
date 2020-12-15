@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace FlightsWebApplication.Models
+namespace DataContext.Entities
 {
     public class Airport
     {
         [Key]
         public string Faa { get; set; }
+
         public string Name { get; set; }
         public double Lat { get; set; }
         public double Lon { get; set; }

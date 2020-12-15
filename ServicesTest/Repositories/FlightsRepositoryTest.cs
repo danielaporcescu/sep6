@@ -1,6 +1,6 @@
 ﻿using DataContext.Context;
 using FizzWare.NBuilder;
-using FlightsWebApplication.Models;
+using DataContext.Entities;
 using Services.Repositories;
 using System.Linq;
 using Xunit;

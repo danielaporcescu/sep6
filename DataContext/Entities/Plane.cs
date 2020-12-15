@@ -1,7 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace FlightsWebApplication.Models
+namespace DataContext.Entities
 {
     public class Plane
     {

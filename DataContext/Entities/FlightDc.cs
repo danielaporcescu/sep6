@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FlightsWebApplication.Models
+namespace DataContext.Entities
 {
     public class FlightDc
     {

@@ -1,4 +1,4 @@
-﻿using FlightsWebApplication.Models;
+﻿using DataContext.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
