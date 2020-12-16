@@ -37,7 +37,6 @@ namespace FlightsWebApplication
             services.AddTransient<IWeatherRepository, WeatherRepository>();
             services.AddTransient<IPlanesRepository, PlanesRepository>();
 
-
             services.AddCors(options =>
             {
                 options.AddPolicy(name: "CORS rules",
@@ -61,13 +60,18 @@ namespace FlightsWebApplication
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UAAContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            context.Database.Migrate();
+
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<UAAContext>();
+                context.Database.Migrate();
+            }
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
